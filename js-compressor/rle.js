@@ -1,16 +1,21 @@
 function compress_rle(data) {
+
   let compressRleString = "";
   let dataLength = data.length;
-  for (i = 0; i < dataLength; i++) {
-    let j = i + 1;
+  let i = 0;
+
+  while(i < dataLength) {
+
     let counter = 1;
-    while (i < dataLength && data[i] === data[j]) {
+
+    while (i + 1 < dataLength && data[i] === data[i + 1]) {
       counter++;
-      j++
+      i++
     }
     compressRleString += `${counter}${data[i]}`;
+    i++
   }
   return compressRleString;
 }
 
-console.log(compress_rle("daata"));
+console.log(compress_rle("this is a string"));
