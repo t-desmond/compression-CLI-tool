@@ -1,4 +1,9 @@
 function compress(data) {
+
+  if (Buffer.isBuffer(data)) {
+    data = data.toString();
+  }
+  
   let compressRleString = "";
   let dataLength = data.length;
   let i = 0;
@@ -24,9 +29,11 @@ function decompress(data) {
   for (let i = 0; i < data.length; i += 2) {
 
     let tempCounter =  parseInt(data[i]);
-    tempBuffer = data[i + 1];
+    let tempBuffer = data[i + 1];
 
     decompressRleString += tempBuffer.repeat(tempCounter)
   }
   return decompressRleString;
 }
+
+module.exports = { compress, decompress };
