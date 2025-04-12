@@ -1,4 +1,4 @@
-function compressRle(data) {
+function compress(data) {
   let compressRleString = "";
   let dataLength = data.length;
   let i = 0;
@@ -16,7 +16,7 @@ function compressRle(data) {
   return compressRleString;
 }
 
-function decompressRle(data) {
+function decompress(data) {
 
   if (data.length % 2 !== 0) throw new Error("Invalid RLE data format.");
 
