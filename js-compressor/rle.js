@@ -17,18 +17,16 @@ function compressRle(data) {
 }
 
 function decompressRle(data) {
-  let i = 0;
-  let decompressRleString = "";
-  while (i < data.length) {
-    let tempCounter =  0;
-    let tempBuffer = "";
 
-    while (tempCounter < parseInt(data[i])) {
-      tempBuffer += data[i + 1];
-      tempCounter++
-    }
-    decompressRleString += tempBuffer;
-    i += 2;
+  if (data.length % 2 !== 0) throw new Error("Invalid RLE data format.");
+
+  let decompressRleString = "";
+  for (let i = 0; i < data.length; i += 2) {
+
+    let tempCounter =  parseInt(data[i]);
+    tempBuffer = data[i + 1];
+
+    decompressRleString += tempBuffer.repeat(tempCounter)
   }
   return decompressRleString;
 }
