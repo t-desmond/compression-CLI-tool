@@ -1,39 +1,41 @@
 function compress(data) {
 
-  if (Buffer.isBuffer(data)) {
-    data = data.toString();
+  if (!Buffer.isBuffer(data)) {
+    throw new Error("Input must be a Buffer");
   }
   
-  let compressRleString = "";
+  let compressRleString = [];
   let dataLength = data.length;
   let i = 0;
 
   while (i < dataLength) {
     let counter = 1;
 
-    while (i + 1 < dataLength && data[i] === data[i + 1]) {
+    while (i + counter < dataLength && data[i] === data[i + counter] && counter < 255) {
       counter++;
-      i++;
     }
-    compressRleString += `${counter}${data[i]}`;
-    i++;
+    compressRleString.push(counter);
+    compressRleString.push(data[i])
+    i += counter;
   }
-  return compressRleString;
+  return Buffer.from(compressRleString);
 }
 
 function decompress(data) {
-
-  if (data.length % 2 !== 0) throw new Error("Invalid RLE data format.");
-
-  let decompressRleString = "";
-  for (let i = 0; i < data.length; i += 2) {
-
-    let tempCounter =  parseInt(data[i]);
-    let tempBuffer = data[i + 1];
-
-    decompressRleString += tempBuffer.repeat(tempCounter)
+  if (!Buffer.isBuffer(data)) {
+    throw new Error("Input must be a Buffer");
   }
-  return decompressRleString;
+
+  let decompressRleString = [];
+  for (let i = 0; i < data.length; i += 2) {
+    const tempCounter = data[i];
+    const tempBuffer = data[i + 1];
+
+    for (let j = 0; j < tempCounter; j++) {
+      decompressRleString.push(tempBuffer);
+    }
+  }
+  return Buffer.from(decompressRleString);
 }
 
 module.exports = { compress, decompress };
