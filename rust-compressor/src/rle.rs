@@ -1,6 +1,5 @@
-use std::error::Error;
 
-fn compress(data: &[u8]) -> Result<Vec<u8>, Box<dyn Error>> {
+fn compress(data: &[u8]) -> Vec<u8> {
   let mut compress_rle_string: Vec<u8> = Vec::new();
   let mut i: usize =  0;
 
@@ -18,10 +17,25 @@ fn compress(data: &[u8]) -> Result<Vec<u8>, Box<dyn Error>> {
     compress_rle_string.push(data[i]);
     i += counter;
   }
-  Ok(compress_rle_string)
+  compress_rle_string
 }
 
+fn decompress(data: &[u8]) -> Vec<u8> {
+  let mut decompress_rle_string: Vec<u8> = Vec::new();
 
+  let mut i: usize = 0;
+  while i < data.len() {
+    
+    let temp_counter = data[i];
+    let temp_buffer = data[i + 1];
+
+    for _ in 0..temp_counter {
+      decompress_rle_string.push(temp_buffer);
+    }
+    i += 2
+  }
+  decompress_rle_string
+}
 #[cfg(test)]
 mod tests {
     use super::*;
