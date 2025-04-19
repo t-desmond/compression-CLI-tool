@@ -3,7 +3,7 @@ function compress(data) {
   if (!Buffer.isBuffer(data)) {
     throw new Error("Input must be a Buffer");
   }
-  
+
   let compressRleString = [];
   let dataLength = data.length;
   let i = 0;
@@ -11,17 +11,22 @@ function compress(data) {
   while (i < dataLength) {
     let counter = 1;
 
-    while (i + counter < dataLength && data[i] === data[i + counter] && counter < 255) {
+    while (
+      i + counter < dataLength &&
+      data[i] === data[i + counter] &&
+      counter < 255
+    ) {
       counter++;
     }
     compressRleString.push(counter);
-    compressRleString.push(data[i])
+    compressRleString.push(data[i]);
     i += counter;
   }
   return Buffer.from(compressRleString);
 }
 
 function decompress(data) {
+  
   if (!Buffer.isBuffer(data)) {
     throw new Error("Input must be a Buffer");
   }
@@ -39,3 +44,4 @@ function decompress(data) {
 }
 
 module.exports = { compress, decompress };
+
