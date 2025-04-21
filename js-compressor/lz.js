@@ -1,6 +1,10 @@
 function compress(data) {
-  const searchBufferSize = 10;
-  const lookaheadBufferSize = 9;
+  if (!Buffer.isBuffer(data)) {
+    data = Buffer.from(data, 'latin1');
+  }
+
+  const searchBufferSize = 20;
+  const lookaheadBufferSize = 15;
   let codingPosition = 0;
   let compressed = [];
 
@@ -10,11 +14,7 @@ function compress(data) {
 
     const searchBufferStart = Math.max(0, codingPosition - searchBufferSize);
     const searchBuffer = data.slice(searchBufferStart, codingPosition);
-
-    const lookaheadBufferEnd = Math.min(
-      data.length,
-      codingPosition + lookaheadBufferSize
-    );
+    const lookaheadBufferEnd = Math.min(data.length, codingPosition + lookaheadBufferSize);
     const lookaheadBuffer = data.slice(codingPosition, lookaheadBufferEnd);
 
     for (let i = lookaheadBuffer.length; i > 0; i--) {
@@ -32,35 +32,42 @@ function compress(data) {
       compressed.push(0x01, offset, length);
       codingPosition += length;
     } else {
-      compressed.push(0x00, data.charCodeAt(codingPosition));
+      compressed.push(0x00, data[codingPosition]);
       codingPosition++;
     }
   }
 
-  return compressed;
+  return Buffer.from(compressed);
 }
 
-function decompress(compressed) {
-  let decompressed = [];
-  let i = 0;
+function decompress(data) {
+  if (!Buffer.isBuffer(data)) {
+    data = Buffer.from(data);
+  }
 
-  while (i < compressed.length) {
-    const flag = compressed[i];
+  let decompressed = [];
+
+  for (let i = 0; i < data.length;) {
+    const flag = data[i];
+
     if (flag === 0x00) {
-      decompressed.push(String.fromCharCode(compressed[i + 1]));
+      decompressed.push(data[i + 1]);
       i += 2;
     } else if (flag === 0x01) {
-      const offset = compressed[i + 1];
-      const length = compressed[i + 2];
+      const offset = data[i + 1];
+      const length = data[i + 2];
       const start = decompressed.length - offset;
       for (let j = 0; j < length; j++) {
         decompressed.push(decompressed[start + j]);
       }
       i += 3;
+    } else {
+      throw new Error(`Invalid flag: ${flag}`);
     }
   }
 
-  return decompressed.join('');
+  return Buffer.from(decompressed);
 }
+
 
 module.exports = {compress, decompress}
