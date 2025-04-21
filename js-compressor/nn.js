@@ -62,3 +62,10 @@ function decompress(compressed) {
 
   return decompressed.join('');
 }
+
+const input = "abcbbcbaaaaaa";
+const compressed = compress(input);
+const decompressed = decompress(compressed);
+
+console.log("Compressed:", compressed);
+console.log("Decompressed:", decompressed);
