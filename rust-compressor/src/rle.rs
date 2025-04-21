@@ -1,6 +1,6 @@
 #![allow(dead_code)]
 
-fn compress(data: &[u8]) -> Vec<u8> {
+pub fn compress(data: &[u8]) -> Vec<u8> {
     let mut compress_rle_string: Vec<u8> = Vec::new();
     let mut i: usize = 0;
 
@@ -17,7 +17,7 @@ fn compress(data: &[u8]) -> Vec<u8> {
     compress_rle_string
 }
 
-fn decompress(data: &[u8]) -> Vec<u8> {
+pub fn decompress(data: &[u8]) -> Vec<u8> {
     let mut decompress_rle_string: Vec<u8> = Vec::new();
 
     let mut i: usize = 0;
