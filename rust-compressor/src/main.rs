@@ -61,20 +61,31 @@ fn main() -> Result<(), Box<dyn Error>> {
     let output_file = match &arguments.output_file {
         Some(file) => file.clone(),
         None => {
-            let file_name = arguments.input_file.file_name().unwrap();
-            let mut new_file_name = file_name.to_os_string();
+            let input_file_name = arguments.input_file.file_name().unwrap();
+            let mut output_file_name = input_file_name.to_os_string();
 
-            
+            let action_dir = match arguments.command {
+                Command::Compress => "compressed",
+                Command::Decompress => "decompressed",
+            };
+
+            let algo_str = match arguments.algorithm {
+                Algorithm::Lz => "lz",
+                Algorithm::Rle => "rle",
+            };
+
             match (&arguments.command, &arguments.algorithm) {
-                (Command::Compress, Algorithm::Lz) => new_file_name.push(".lz"),
-                (Command::Decompress, Algorithm::Lz) => new_file_name.push(".out"),
-                (Command::Compress, Algorithm::Rle) => new_file_name.push(".rle"),
-                (Command::Decompress, Algorithm::Rle) => new_file_name.push(".out"),
+                (Command::Compress, Algorithm::Lz) => output_file_name.push(".lz"),
+                (Command::Decompress, Algorithm::Lz) => output_file_name.push(".out"),
+                (Command::Compress, Algorithm::Rle) => output_file_name.push(".rle"),
+                (Command::Decompress, Algorithm::Rle) => output_file_name.push(".out"),
             }
 
-            let mut output_file = arguments.input_file.clone();
-            output_file.set_file_name(new_file_name);
-            output_file
+            let mut output_path = PathBuf::from(action_dir);
+            output_path.push(algo_str);
+            fs::create_dir_all(&output_path)?;
+            output_path.push(output_file_name);
+            output_path
         }
     };
 
