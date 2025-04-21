@@ -62,3 +62,5 @@ function decompress(compressed) {
 
   return decompressed.join('');
 }
+
+module.exports = {compress, decompress}
