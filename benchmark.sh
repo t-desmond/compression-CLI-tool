@@ -38,7 +38,7 @@ benchmark_js() {
   docker run --rm \
     -v "$(pwd)/js-compressor/data:/app/data" \
     -v "$(pwd)/js-compressor/compressed:/app/compressed" \
-    js-compressor \
+    ghcr.io/t-desmond/compression-cli-tool/js-compressor:latest \
     node index.js \
       --command compress \
       --input data/$INPUT_FILE \
@@ -51,7 +51,7 @@ benchmark_js() {
   docker run --rm \
     -v "$(pwd)/js-compressor/compressed:/app/compressed" \
     -v "$(pwd)/js-compressor/decompressed:/app/decompressed" \
-    js-compressor \
+    ghcr.io/t-desmond/compression-cli-tool/js-compressor:latest \
     node index.js \
       --command decompress \
       --input compressed/$(basename "${!compressed_file_var}") \
@@ -76,7 +76,7 @@ benchmark_rust() {
   mkdir -p rust-compressor/compressed rust-compressor/decompressed
 
   START_TIME=$(date +%s)
-  docker run --rm -v "$(pwd)":/data rust-compressor:check \
+  docker run --rm -v "$(pwd)":/data ghcr.io/t-desmond/compression-cli-tool/rust-compressor:latest \
     --command compress \
     --input-file /data/js-compressor/data/$INPUT_FILE \
     --algorithm $algo \
@@ -85,7 +85,7 @@ benchmark_rust() {
   COMPRESS_TIME=$((END_TIME - START_TIME))
 
   START_TIME=$(date +%s)
-  docker run --rm -v "$(pwd)":/data rust-compressor:check \
+  docker run --rm -v "$(pwd)":/data ghcr.io/t-desmond/compression-cli-tool/rust-compressor:latest \
     --command decompress \
     --input-file /data/${!compressed_file_var} \
     --algorithm $algo \
