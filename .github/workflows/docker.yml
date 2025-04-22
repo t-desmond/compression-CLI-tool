@@ -1,0 +1,38 @@
+name: buid and push to ghcr.io
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        componenet: [js-compressor, rust-compressor]
+
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Login to ghcr.io
+        uses: docker/login-action@v2
+        with:
+          registory: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secretes.GITHUB_TOKEN }}
+
+      - name: Build and push
+        uses: docker/build-push-action@v4
+        with:
+          context: ./${{ matrix.componenet }}
+          file: ./${{ matrix.componenet }}/Dockerfile
+          push: true
+          tags: |
+            ghcr.io/${{ github.repository }}/${{ matrix.componenet }}:latest
