@@ -10,6 +10,6 @@ FROM debian:bookworm-slim
 
 RUN apt-get update && apt-get install -y libgcc1
 
-COPY --from=builder /compress/target/release/rust-compressor /compress/rust-compressor
+COPY --from=builder /compress/target/release/rust-compressor /usr/local/bin/rust-compressor
 
-CMD ["/compress/rust-compressor"]
+ENTRYPOINT ["rust-compressor"]
