@@ -1,0 +1,55 @@
+<!-- Mock test file for compression algorithms -->
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Compression Test Case</title>
+    <style>
+      body {
+        font-family: Arial;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Test Compression!</h1>
+
+    <p>
+      The quick brown fox jumps over the lazy dog.  
+      The quick brown fox jumps over the lazy dog.  
+      The quick brown fox jumped over the lazy dogs.
+    </p>
+
+    <p>
+      AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA  
+      BBBBBBBBBBBBBBBBBBBBBBBBBBBBBB  
+      ABCABCABCABCABCABCABCABCABCABC  
+      xxxxxxxxxyyyyyyyyyzzzzzzzzzz
+    </p>
+
+    <p>
+      Symbols test: !!!!!!@@@@@@######$$$$$$%%%%%%^^^^^^&&&&&&******
+      Numbers: 1234567890 1234567890 1234567890
+    </p>
+
+    <p>
+      Whitespace:  
+        
+        
+        
+        indented block with spaces and tabs			
+
+
+      Line breaks too.
+    </p>
+
+    <p>
+      Unicode: 😃😃😃😃😃😃😃 — привет мир — 你好世界 — 😀😃😄😁😆😅😂🤣
+    </p>
+
+    <p>
+      Long paragraph with variations:  
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.  
+      Lorem ipsum *dolar* sit amet, consectetur adipiscing elit.  
+      Lorem ipsum dolor sit amet, **consectetuer** adipiscing elit.
+    </p>
+  </body>
+</html>
